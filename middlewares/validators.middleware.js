@@ -1,4 +1,4 @@
-const { body, validationResult } = require('express-validator');
+const { body, validationResult, param } = require('express-validator');
 
 const { AppError } = require('../utils/appError.util');
 
@@ -29,15 +29,17 @@ const createUserValidators = [
 ];
 const createTaskValidators = [
 	body('title').notEmpty().withMessage('Name cannot be empty'),
-    body('userId').notEmpty().withMessage('UserId cannot be empty'),
-    body('limiDate').notEmpty().withMessage('limiDate cannot be empty'),
+    body('userId')
+		.notEmpty().withMessage('UserId cannot be empty')
+		.isNumeric().withMessage("UserId must be a number"),
+		
+    body('limitDate')
+		.notEmpty().withMessage("LimitDate cannot be empty")
+		.isISO8601({format: 'yyyy-MM-dd HH:mm:ss'}).withMessage("LimitDate must be a date")
+		.isLength({ min: 10 }).withMessage("LimitDate must be a valid date 10 numbers"),
+		
     checkResult,
 ];
-const updateTaskValidators = [
-	body('status').notEmpty().withMessage('Status cannot be empty'),
-	
-	checkResult,
-];
 
 
-module.exports = { createUserValidators , createTaskValidators , updateTaskValidators };
+module.exports = { createUserValidators , createTaskValidators };

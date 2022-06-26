@@ -48,16 +48,15 @@ const updateUser = catchAsync(async (req, res, next) => {
 
 	await user.update({ name, email });
 
-	res.status(204).json({ status: 'success' });
+	res.status(200).json({ status: 'success' });
 });
 
 const deleteUser = catchAsync(async (req, res, next) => {
 	const { user } = req;
 
-	// await user.destroy();
 	await user.update({ status: 'deleted' });
 
-	res.status(204).json({ status: 'success' });
+	res.status(200).json({ status: 'success' });
 });
 
 module.exports = {

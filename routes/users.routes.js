@@ -1,6 +1,6 @@
 const express = require('express');
 
-// Controllers
+
 const {
 	getAllUsers,
 	createUser,
@@ -9,9 +9,9 @@ const {
 	deleteUser,
 } = require('../controllers/users.controller');
 
-// Middlewares
+
 const {
-	createUserValidators,
+	createUserValidators
 } = require('../middlewares/validators.middleware');
 const { userExists } = require('../middlewares/users.middleware');
 

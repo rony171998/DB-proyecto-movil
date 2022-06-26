@@ -18,21 +18,25 @@ const getAllTasks = catchAsync(async (req, res, next) => {
 });
 
 const createTask = catchAsync(async (req, res, next) => {
-	const { title,userId ,limitDate } = req.body;
+	const {userId ,title  ,limitDate } = req.body;
+	const user = await User.findOne({where: {id: userId}});
+
+	if (!user) {
+		return next(new AppError('User not found', 404));
+	}else{
+		const task = await Task.create({
+			userId,
+			title,
+			limitDate,
+			startDate: new Date(),
+		});
+
+		res.status(201).json({
+			status: 'success',
+			task,
+		});
+	}
 	
-
-	const newTask = await Task.create({
-		title,
-		userId,
-		limitDate,
-		startDate: new Date(),
-		
-	});
-
-	res.status(201).json({
-		status: 'success',
-		newTask,
-	});
 });
 
 const getTaskById = catchAsync(async (req, res, next) => {
@@ -55,16 +59,22 @@ const getTaskByStatus = catchAsync(async (req, res, next) => {
 
 const updateTask = catchAsync(async (req, res, next) => {
 	const { task } = req;
-	const { status  } = req.body;
+	
 
-	if (status === 'active') {
-		await task.update({ status: 'completed' });
-		res.status(204).json({ status: 'success' });
+	if (task.status === 'active') {
+		if (task.limitDate > new Date()) {
+			await task.update({ status: 'completed', finishDate: new Date() });	
+			res.status(200).json({ status: 'success completed' , finishDate: new Date() });		
+		}else{
+			await task.update({ status: 'late', finishDate: new Date() });
+			res.status(200).json({ status: 'success late' });
+        }
+		
+
 	}else {
-		res.status(204).json({ status: 'error no active task' });
+		res.status(200).json({ status: 'error no active task' });
 	}
-	
-	
+		
 });
 
 const deleteTask = catchAsync(async (req, res, next) => {
@@ -72,13 +82,14 @@ const deleteTask = catchAsync(async (req, res, next) => {
 
 	await task.update({ status: 'cancelled' });
 
-	res.status(204).json({ status: 'success' });
+	res.status(200).json({ status: 'success' });
 });
 
 module.exports = {
 	getAllTasks,
 	createTask,
 	getTaskById,
+	getTaskByStatus,
 	updateTask,
 	deleteTask,
 };
