@@ -1,15 +1,13 @@
 // Models
 const { User } = require('../models/user.model');
-const { Task } = require('../models/task.model');
+
 
 // Utils
 const { catchAsync } = require('../utils/catchAsync.util');
 const { AppError } = require('../utils/appError.util');
 
 const getAllUsers = catchAsync(async (req, res, next) => {
-	const users = await User.findAll({
-		include: Task,
-	});
+	const users = await User.findAll();
 
 	res.status(200).json({
 		status: 'success',
@@ -18,13 +16,17 @@ const getAllUsers = catchAsync(async (req, res, next) => {
 });
 
 const createUser = catchAsync(async (req, res, next) => {
-	const { name, age, email, password } = req.body;
+	const { email,password,first_name ,last_name,age,photo } = req.body;
 
 	const newUser = await User.create({
-		name,
-		age,
+
 		email,
 		password,
+		first_name,
+		last_name,
+		age,
+		photo,
+		
 	});
 
 	res.status(201).json({
@@ -44,9 +46,9 @@ const getUserById = catchAsync(async (req, res, next) => {
 
 const updateUser = catchAsync(async (req, res, next) => {
 	const { user } = req;
-	const { name , email } = req.body;
+	const { email,password,first_name ,last_name,age,photo  } = req.body;
 
-	await user.update({ name, email });
+	await user.update({  email,password,first_name ,last_name,age,photo  });
 
 	res.status(200).json({ status: 'success' });
 });

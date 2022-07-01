@@ -18,28 +18,22 @@ const checkResult = (req, res, next) => {
 };
 
 const createUserValidators = [
-	body('name').notEmpty().withMessage('Name cannot be empty'),
+	
 	body('email').isEmail().withMessage('Must provide a valid email'),
 	body('password')
 		.isLength({ min: 8 })
 		.withMessage('Password must be at least 8 characters long')
 		.isAlphanumeric()
 		.withMessage('Password must contain letters and numbers'),
+	body('first_name').notEmpty().withMessage('first_name cannot be empty'),
+	body('last_name').notEmpty().withMessage('last_name cannot be empty'),	
+	body('age').notEmpty().withMessage('age cannot be empty')
+	.isDate().withMessage('age must be a Date'),
+	body('photo').notEmpty().withMessage('photo cannot be empty')
+	.isURL().withMessage('photo must be a URL'),
 	checkResult,
 ];
-const createTaskValidators = [
-	body('title').notEmpty().withMessage('Name cannot be empty'),
-    body('userId')
-		.notEmpty().withMessage('UserId cannot be empty')
-		.isNumeric().withMessage("UserId must be a number"),
-		
-    body('limitDate')
-		.notEmpty().withMessage("LimitDate cannot be empty")
-		.isISO8601({format: 'yyyy-MM-dd HH:mm:ss'}).withMessage("LimitDate must be a date")
-		.isLength({ min: 10 }).withMessage("LimitDate must be a valid date 10 numbers"),
-		
-    checkResult,
-];
 
 
-module.exports = { createUserValidators , createTaskValidators };
+
+module.exports = { createUserValidators  };

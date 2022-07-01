@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 
 
 const {
@@ -17,7 +18,7 @@ const { userExists } = require('../middlewares/users.middleware');
 
 const usersRouter = express.Router();
 
-usersRouter.get('/', getAllUsers);
+usersRouter.get('/',cors (), getAllUsers );
 
 usersRouter.post('/', createUserValidators, createUser);
 

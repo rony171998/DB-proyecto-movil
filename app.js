@@ -1,7 +1,14 @@
 const express = require('express');
+const cors = require('cors');
+
+var corsOptions = {
+	  origin: 'http://localhost:4000',
+	  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+
+}
 
 const { usersRouter } = require('./routes/users.routes');
-const { tasksRouter } = require('./routes/tasks.routes');
+
 
 // Global err controller
 const { globalErrorHandler } = require('./controllers/error.controller');
@@ -16,7 +23,6 @@ const app = express();
 app.use(express.json()) 
 
 app.use('/api/v1/users', usersRouter);
-app.use('/api/v1/tasks', tasksRouter);
 
 //Handle incoming unknown routes to the server
 app.all('*', (req, res, next) => {

@@ -7,10 +7,6 @@ const User = db.define('user', {
 		autoIncrement: true,
 		allowNull: false,
 	},
-	name: {
-		type: DataTypes.STRING,
-		allowNull: false,
-	},
 	email: {
 		type: DataTypes.STRING,
 		allowNull: false,
@@ -20,11 +16,23 @@ const User = db.define('user', {
 		type: DataTypes.STRING,
 		allowNull: false,
 	},
-	status: {
+	first_name: {
 		type: DataTypes.STRING,
 		allowNull: false,
-		defaultValue: 'active',
 	},
+	last_name: {
+		type: DataTypes.STRING,
+		allowNull: false,
+	},
+	age: {
+		type: DataTypes.DATE,
+		allowNull: false,
+	},
+	photo: {
+		type: DataTypes.STRING,
+		allowNull: false,
+	},
+	
 });
 
 module.exports = { User };
